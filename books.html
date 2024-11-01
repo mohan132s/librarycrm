@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library CRM - Books</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <style>
+        .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    max-width: 500px; /* Max width for larger screens */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .modal-content {
+        width: 90%; /* Full width on smaller screens */
+        margin-top: 30%;
+    }
+}
+    </style>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                Library CRM
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Dashboard
+                    </a></li>
+                    <li><a href="books.html" class="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        Books
+                    </a></li>
+                    <li><a href="members.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Members
+                    </a></li>
+                    <li><a href="reports.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Reports
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="section-header">
+                <h2>Book Inventory</h2>
+                <button class="btn" id="addBookBtn">Add New Book</button>
+            </div>
+            <div class="search-container">
+                <input type="text" id="bookSearch" placeholder="Search books...">
+                <button class="btn" id="searchBtn">Search</button>
+            </div>
+            
+            <div class="book-list">
+                <table id="bookTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>ISBN</th>
+                            <th>Status</th>
+                            <th>Due Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookTableBody"></tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div id="addBookModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Book</h2>
+            <form id="addBookForm">
+                <input type="text" id="bookTitle" placeholder="Book Title" required>
+                <input type="text" id="bookAuthor" placeholder="Author" required>
+                <input type="text" id="bookISBN" placeholder="ISBN" required>
+                <select id="bookStatus" required>
+                    <option value="">Select Status</option>
+                    <option value="Available">Available</option>
+                    <option value="Checked Out">Checked Out</option>
+                </select>
+                <input type="date" id="bookDueDate" placeholder="Due Date">
+                <button type="submit" class="btn">Add Book</button>
+            </form>
+        </div>
+    </div>
+<script>
+  // Get modal element
+var modal = document.getElementById("addBookModal");
+
+// Get button that opens the modal
+var btn = document.getElementById("addBookBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// Handle form submission
+document.getElementById("addBookForm").onsubmit = function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Get input values
+    var title = document.getElementById("bookTitle").value;
+    var author = document.getElementById("bookAuthor").value;
+    var isbn = document.getElementById("bookISBN").value;
+    var status = document.getElementById("bookStatus").value;
+    var dueDate = document.getElementById("bookDueDate").value;
+
+    // Create a new row and cells
+    var tableBody = document.getElementById("bookTableBody");
+    var newRow = tableBody.insertRow();
+
+    newRow.insertCell(0).innerText = title;
+    newRow.insertCell(1).innerText = author;
+    newRow.insertCell(2).innerText = isbn;
+    newRow.insertCell(3).innerText = status;
+    newRow.insertCell(4).innerText = dueDate;
+
+    // Create actions cell with delete button
+    var actionsCell = newRow.insertCell(5);
+    var deleteButton = document.createElement("button");
+    deleteButton.innerText = "Delete";
+    deleteButton.className = "btn delete-btn";
+    
+    // Add delete functionality
+    deleteButton.onclick = function() {
+        tableBody.deleteRow(newRow.rowIndex - 1); // Adjust index since we are in tbody
+    };
+    
+    actionsCell.appendChild(deleteButton);
+
+    // Clear form inputs and close modal
+    document.getElementById("addBookForm").reset();
+    modal.style.display = "none";
+}
+// Search functionality
+document.getElementById("searchBtn").onclick = function() {
+    var input = document.getElementById("bookSearch").value.toLowerCase();
+    var tableBody = document.getElementById("bookTableBody");
+    var rows = tableBody.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those that don't match the search query
+    for (var i = 0; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName("td");
+        var found = false;
+
+        // Check each cell in the row for a match
+        for (var j = 0; j < cells.length - 1; j++) { // Exclude actions cell
+            if (cells[j].innerText.toLowerCase().indexOf(input) > -1) {
+                found = true;
+                break;
+            }
+        }
+
+        // Show or hide row based on match
+        if (found) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+};
+
+// Optional: Allow pressing Enter to trigger search
+document.getElementById("bookSearch").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        document.getElementById("searchBtn").click();
+    }
+});
+</script>
+    <script src="script.js"></script>
+</body>
+</html>

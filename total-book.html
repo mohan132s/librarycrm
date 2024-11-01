@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library CRM - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <style>
+      
+.go-back-button {
+    background-color: #007BFF;
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    font-size: 16px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Hover effect */
+.go-back-button:hover {
+    background-color: #0056b3; 
+    transform: scale(1.05); 
+}
+
+/* Active effect */
+.go-back-button:active {
+    background-color: #004494; 
+}
+.d-flex{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+.main-content {
+    padding: 20px;
+}
+
+.search-container {
+    margin: 20px 0;
+}
+
+#searchBox {
+    padding: 10px;
+    width: 200px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+    </style>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                Library CRM
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Dashboard
+                    </a></li>
+                    <li><a href="books.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        Books
+                    </a></li>
+                    <li><a href="members.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Members
+                    </a></li>
+                    <li><a href="reports.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Reports
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <div class="d-flex">
+                <h2>Total Books</h2>
+                <button class="go-back-button" onclick="goBack()">Go Back</button>
+            </div>
+            <div class="search-container">
+                <input type="text" id="searchBox" placeholder="Search by author name..." onkeyup="filterBooks()">
+            </div>
+        
+            <table id="booksTable">
+                <thead>
+                    <tr>
+                        <th>Author Name</th>
+                        <th>Publish Date</th>
+                        <th>Book Name</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Sample data rows -->
+                    <tr>
+                        <td>J.K. Rowling</td>
+                        <td>1997-06-26</td>
+                        <td>Harry Potter and the Philosopher's Stone</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <td>George R.R. Martin</td>
+                        <td>1996-08-06</td>
+                        <td>A Game of Thrones</td>
+                        <td>5</td>
+                    </tr>
+                    <!-- Add more book entries here -->
+                </tbody>
+            </table>
+        </main>
+    </div>
+    <script>
+        // Function to filter books based on the search input
+        function filterBooks() {
+            const input = document.getElementById('searchBox');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('booksTable');
+            const tr = table.getElementsByTagName('tr');
+        
+            // Loop through all table rows (except the first, which is the header)
+            for (let i = 1; i < tr.length; i++) {
+                const td = tr[i].getElementsByTagName('td')[0]; // Get the author name cell
+                if (td) {
+                    const txtValue = td.textContent || td.innerText;
+                    tr[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
+                }
+            }
+        }
+        
+        // Function to handle the "Go Back" button action
+        function goBack() {
+            // Navigate to the previous page in history
+            window.history.back();
+            
+            // Alternatively, you can redirect to a specific URL:
+             window.location.href = 'index.html';
+        }
+
+        
+        </script>
+   
+    <script src="script.js"></script>
+        
+
+</body>
+</html>

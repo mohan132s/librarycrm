@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library CRM - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <style>
+        .bg-white{
+            background-color: #ffff;
+        }
+        
+        .text-lg {
+            font-size: 1.125rem; 
+        }
+
+        .font-semibold {
+            font-weight: 600; 
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem; 
+        }
+
+
+        .text-sm {
+            font-size: 0.875rem; 
+        }
+
+        .text-gray-500 {
+            color: #6b7280; 
+        }
+
+
+        table {
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+
+        th, td {
+            padding: 0.75rem; 
+            text-align: left; 
+            border-bottom: 1px solid #e5e7eb; 
+        }
+
+
+        th {
+            background-color: #f9fafb; 
+            color: #374151; 
+        }
+
+
+        tbody tr:hover {
+            background-color: #f1f5f9; 
+        }
+
+
+        canvas {
+            width: 100% !important; 
+            height: 300px !important;
+        }
+        .p-6{
+            padding: 50px;
+        }
+        .bg-white.p-6.rounded-lg.shadow-md {
+            margin-bottom:10px;
+            border-radius: 10px;
+        }
+
+    </style>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                Library CRM
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Dashboard
+                    </a></li>
+                    <li><a href="books.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        Books
+                    </a></li>
+                    <li><a href="members.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Members
+                    </a></li>
+                    <li><a href="reports.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Reports
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h2>Dashboard</h2>
+            <div class="dashboard">
+                <!-- Existing Cards -->
+                <div class="card"><a style="text-decoration: none;" href="total-book.html"><h2>Total Books</h2></a><p id="totalBooks">0</p></div>
+                <div class="card"><a style="text-decoration: none;" href="books-checkout.html"><h2>Books Checked Out</h2></a><p id="booksCheckedOut">0</p></div>
+                <div class="card"><a style="text-decoration: none;" href="active-members.html"><h2>Active Members</h2></a><p id="activeMembers">0</p></div>
+                <div class="card"><a style="text-decoration: none;" href="overdue-books.html"><h2>Overdue Books</h2></a><p id="overdueBooks">0</p></div>
+        
+                <!-- New Cards -->
+                <div class="card"><h2>Total Authors</h2><p id="totalAuthors">0</p></div>
+                <div class="card"><h2>Total Genres</h2><p id="totalGenres">0</p></div>
+                <div class="card"><h2>Books Added This Month</h2><p id="booksAddedThisMonth">0</p></div>
+                <div class="card"><h2>Total Fines Collected</h2><p id="totalFinesCollected">₹0.00</p></div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-lg font-semibold mb-4">Recent Activities</h3>
+                <p class="text-sm text-gray-500 mb-4">Latest actions in the library system</p>
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="text-left py-2">User</th>
+                            <th class="text-left py-2">Action</th>
+                            <th class="text-left py-2">Book</th>
+                            <th class="text-left py-2">Date</th>
+                            <th class="text-left py-2">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recentActivitiesBody">
+                        <tr>
+                            <td colspan="5" class="py-4 text-center">Loading recent activities...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+       
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-4">Monthly Book Checkouts</h3>
+                    <canvas id="checkoutsChart"></canvas>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-4">Member Growth</h3>
+                    <canvas id="memberGrowthChart"></canvas>
+                </div>
+            </div>
+        
+         
+        </main>
+    </div>
+    <script>
+        // Sample data for demonstration purposes
+const checkoutsData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    data: [150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700], // Sample data for each month
+};
+
+const memberGrowthData = {
+    labels: ['2021', '2022', '2023', '2024'],
+    data: [120, 180, 240, 300],
+};
+
+// Function to render Monthly Book Checkouts Chart
+function renderCheckoutsChart() {
+    const ctx = document.getElementById('checkoutsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: checkoutsData.labels,
+            datasets: [{
+                label: 'Monthly Book Checkouts',
+                data: checkoutsData.data,
+                backgroundColor: '#4BC0C0',
+                borderColor: '#36A2EB',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Checkouts'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Months'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Function to render Member Growth Chart
+function renderMemberGrowthChart() {
+    const ctx = document.getElementById('memberGrowthChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: memberGrowthData.labels,
+            datasets: [{
+                label: 'Member Growth',
+                data: memberGrowthData.data,
+                fill: false,
+                borderColor: '#FF6384',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Number of Members'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Years'
+                    }
+                }
+            }
+        }
+    });
+}
+
+// Initialize charts on page load
+window.onload = function() {
+    renderCheckoutsChart();
+    renderMemberGrowthChart();
+};
+    </script>
+    <script src="script.js"></script>
+   
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library CRM - Reports</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <style>
+        .report-list {
+ 
+    margin: 20px 0; 
+}
+
+.chart-container {
+    width: 50%; 
+    margin: 10px; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+    overflow: hidden;
+    padding: 20px;
+    
+}
+
+canvas {
+    width: 100% !important; 
+    height: auto !important; 
+}
+.chart-d{
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+    </style>
+    <div class="container">
+        <aside class="sidebar">
+            <h1>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                Library CRM
+            </h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        Dashboard
+                    </a></li>
+                    <li><a href="books.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                        Books
+                    </a></li>
+                    <li><a href="members.html">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        Members
+                    </a></li>
+                    <li><a href="reports.html" class="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                        Reports
+                    </a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <h2>Reports</h2>
+            <div class="report-list">
+                <div class="chart-d">
+                    <div class="chart-container">
+                        <canvas id="monthlyCheckoutsChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="topBorrowedBooksChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+  
+        <script>
+// Sample data for Monthly Checkouts Chart
+const monthlyCheckoutsCtx = document.getElementById('monthlyCheckoutsChart').getContext('2d');
+const monthlyCheckoutsChart = new Chart(monthlyCheckoutsCtx, {
+    type: 'line', // You can change to 'bar', 'pie', etc.
+    data: {
+        labels: [
+            'January', 'February', 'March', 'April', 'May', 
+            'June', 'July', 'August', 'September', 'October', 
+            'November', 'December'
+        ], // X-axis labels for all months
+        datasets: [{
+            label: 'Monthly Checkouts',
+            data: [30, 50, 20, 40, 60, 80, 70, 90, 100, 110, 120, 130], // Sample data for each month
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderWidth: 1,
+            fill: true,
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Checkouts' // Y-axis title
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Months' // X-axis title
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                mode: 'index',
+                intersect: false,
+            }
+        }
+    }
+});
+
+// Sample data for Top Borrowed Books Chart
+const topBorrowedBooksCtx = document.getElementById('topBorrowedBooksChart').getContext('2d');
+const topBorrowedBooksChart = new Chart(topBorrowedBooksCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Book A', 'Book B', 'Book C', 'Book D'], // Book titles
+        datasets: [{
+            label: 'Times Borrowed',
+            data: [12, 19, 7, 5], // Sample data
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+// Sample data for Membership Expiry Chart
+const membershipExpiryCtx = document.getElementById('membershipExpiryChart').getContext('2d');
+const membershipExpiryChart = new Chart(membershipExpiryCtx, {
+    type: 'pie',
+    data: {
+        labels: ['Active Members', 'Expired Members'], // Status labels
+        datasets: [{
+            label: '# of Members',
+            data: [300, 50], // Sample data
+            backgroundColor: [
+                'rgba(255, 205, 86)',
+                'rgba(255,99,132)'
+            ],
+            borderColor: [
+                'rgba(255,255,255)',
+                'rgba(255,255,255)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+    }
+});
+</script>
+    
+    <script src="script.js"></script>
+</body>
+</html>
